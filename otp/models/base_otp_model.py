@@ -32,7 +32,7 @@ class BaseOTPModel(models.Model):
         result: bool = self.attempts < self.max_attempts
         return result
 
-    def hash_otp(otp: str) -> str:
+    def hash_otp(self, otp: str) -> str:
         """Hash the OTP code using SHA-256."""
         hashed_otp: str = hashlib.sha256(otp.encode()).hexdigest()
         return hashed_otp

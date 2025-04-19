@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny
 
 from authentication.utils import get_client_ip
 from authentication.serializers import LoginSerializer
-from authentication.models import AuthAttemptModel as LoginAttempt
+from authentication.models import AuthAttemptModel as EntryAttempt
 
 
 class LoginView(APIView):
@@ -30,7 +30,7 @@ class LoginView(APIView):
         # Get the client IP address
         client_ip = get_client_ip(request)
         # Get user's login attempt
-        attempt, _ = LoginAttempt.objects.get_or_create(
+        attempt, _ = EntryAttempt.objects.get_or_create(
             phone_number=phone_number,
             ip_address=client_ip,
             auth_type="login",

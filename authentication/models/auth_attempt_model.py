@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 
 auth_type_choices = (
+    ("entry", "Entry"),
     ("login", "Login"),
     ("registration", "Registration"),
 )
