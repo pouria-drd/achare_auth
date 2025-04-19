@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # Custom apps
     "otp",
     "accounts",
+    "authentication",
 ]
 
 MIDDLEWARE = [

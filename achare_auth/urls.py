@@ -20,6 +20,7 @@ urlpatterns = [
     path(base_url + os.getenv("ADMIN_URL", "admin/"), admin.site.urls),
     # api urls
     path(base_url + "accounts/", include("accounts.urls")),
+    path(base_url + "authentication/", include("authentication.urls")),
 ]
 
 if settings.DEBUG:
