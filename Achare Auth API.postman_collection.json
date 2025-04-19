@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "d8f5ee3a-5375-42ef-94ff-45512cd538f6",
+		"name": "Achare Auth API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27124531"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Auth Entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phoneNumber\": \"09364129585\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/achare-api/authentication/auth_entry/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"achare-api",
+								"authentication",
+								"auth_entry",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otpId\":\"f17f84e0-82a7-4f73-8e0d-bf8dba9347b4\",\r\n    \"phoneNumber\": \"09364129585\",\r\n    \"otpCode\":\"241521\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/achare-api/authentication/verify_otp/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"achare-api",
+								"authentication",
+								"verify_otp",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phoneNumber\": \"09364129585\",\r\n    \"password\": \"test_pass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/achare-api/authentication/login/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"achare-api",
+								"authentication",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phoneNumber\": \"09364129586\",\r\n    \"firstName\":\"pouria\",\r\n    \"lastName\":\"drd\",\r\n    \"email\":\"examples@gmail.com\",\r\n    \"password\": \"test_pass\",\r\n    \"confirmPassword\":\"test_pass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/achare-api/authentication/register/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"achare-api",
+								"authentication",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
