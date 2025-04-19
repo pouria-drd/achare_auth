@@ -6,7 +6,7 @@ class UserManager(BaseUserManager):
     Custom manager for the UserModel, handling user and superuser creation.
     """
 
-    def create_user(self, phone_number=None, password=None):
+    def create_user(self, phone_number=None, password=None, **extra_fields):
         """
         Creates and returns a regular user.
         """
@@ -19,13 +19,13 @@ class UserManager(BaseUserManager):
             raise ValueError("Users must have a password")
 
         # Create the user instance with the provided details
-        user = self.model(phone_number=phone_number)
+        user = self.model(phone_number=phone_number, **extra_fields)
         user.set_password(password)  # Hash the password before saving
         user.save(using=self._db)  # Save the user to the database
 
         return user
 
-    def create_superuser(self, phone_number=None, password=None):
+    def create_superuser(self, phone_number=None, password=None, **extra_fields):
         """
         Creates and returns a superuser with all permissions.
         """
@@ -33,10 +33,18 @@ class UserManager(BaseUserManager):
         if not phone_number:
             phone_number = None
 
-        user = self.create_user(phone_number=phone_number, password=password)
+        user = self.create_user(
+            phone_number=phone_number, password=password, **extra_fields
+        )
 
-        user.is_superuser = True  # Assign superuser status
-        user.is_staff = True  # Allow admin panel access
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if not extra_fields["is_staff"]:
+            raise ValueError("Superuser must have is_staff=True.")
+
+        if not extra_fields["is_superuser"]:
+            raise ValueError("Superuser must have is_superuser=True.")
 
         user.save(using=self._db)
 
