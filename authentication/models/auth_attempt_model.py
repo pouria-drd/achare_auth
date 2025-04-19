@@ -5,6 +5,7 @@ from django.utils import timezone
 auth_type_choices = (
     ("entry", "Entry"),
     ("login", "Login"),
+    ("otp_verify", "OTP Verify"),
     ("registration", "Registration"),
 )
 
