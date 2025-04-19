@@ -18,13 +18,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: Don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-# AUTH_USER_MODEL = "accounts.UserModel"
+AUTH_USER_MODEL = "accounts.UserModel"
 
 ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     # Django apps
     "django.contrib.admin",  # Django admin interface
@@ -124,9 +123,56 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+# Static files URL and root directory
+STATIC_URL = os.getenv("STATIC_URL", "static/")  # Default is "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, os.getenv("STATIC_ROOT", "static"))
+
+# Media files URL and root directory
+MEDIA_URL = os.getenv("MEDIA_URL", "/media/")  # Default is "/media/"
+MEDIA_ROOT = BASE_DIR / os.getenv("MEDIA_ROOT", "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ---------------------------------------------------------------
+# Allowed Hosts Configuration
+# ---------------------------------------------------------------
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(
+    ","
+)  # Allowed hosts from environment variable
+INTERNAL_IPS = os.getenv("INTERNAL_IPS", "127.0.0.1").split(
+    ","
+)  # Internal IPs for debug toolbar
+
+# ---------------------------------------------------------------
+# CORS Configuration
+# ---------------------------------------------------------------
+
+CORS_ALLOW_CREDENTIALS = (
+    os.getenv("CORS_ALLOW_CREDENTIALS", "False") == "True"
+)  # Whether to allow credentials in CORS
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(
+    ","
+)  # List of allowed origins for CORS
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]  # Allowed HTTP methods for CORS
+
+# ---------------------------------------------------------------
+# Django REST Framework Configuration
+# ---------------------------------------------------------------
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        # "rest_framework.permissions.IsAuthenticated",  # Only authenticated users can access
+        "rest_framework.permissions.AllowAny",  #  Allow anonymous users to access
+    ],
+}
