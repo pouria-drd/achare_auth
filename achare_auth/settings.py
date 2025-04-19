@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "corsheaders",  # Cross-origin resource sharing
     "rest_framework",  # Django REST framework for building APIs
     # Custom apps
+    "otp",
     "accounts",
 ]
 
