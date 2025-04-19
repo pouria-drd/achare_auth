@@ -24,7 +24,7 @@ class LoginView(APIView):
 
         # Get the validated data from the serializer
         password = serializer.validated_data["password"]
-        phone_number = serializer.validated_data["phone_number"]
+        phone_number = serializer.validated_data["phoneNumber"]
         # Authenticate the user using the phone number and password
         user = authenticate(phone_number=phone_number, password=password)
         # Get the client IP address
@@ -59,7 +59,7 @@ class LoginView(APIView):
             attempt.save()
 
             return Response(
-                {"detail": "رمز یا شماره همراه اشتباه است."},
+                {"detail": "رمز عبور یا شماره همراه اشتباه است."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         # else, the user is authenticated
