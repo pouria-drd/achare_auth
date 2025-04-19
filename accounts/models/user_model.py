@@ -23,12 +23,12 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 
     # Phone number is required for user creation
     phone_number = models.CharField(
-        max_length=13,
+        max_length=11,
         unique=True,
         blank=False,  # Phone number is required
         null=False,
         validators=[iran_phone_validator],  # Apply phone number validator
-        help_text="Enter a valid Iranian phone number (e.g., +989123456789 or 09123456789).",
+        help_text="Enter a valid Iranian phone number (e.g., 09123456789).",
     )
 
     # Optional last name field, can be left blank or set to null.

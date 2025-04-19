@@ -1,17 +1,6 @@
-import os
 import uuid
 import hashlib
-from random import choices
 from django.db import models
-from datetime import timedelta
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
-
-OTP_CODE_EXPIRE_TIME = int(os.environ.get("OTP_CODE_EXPIRE_TIME", 5))
-
-
-def get_default_expires_at():
-    return timezone.now() + timedelta(minutes=OTP_CODE_EXPIRE_TIME)
 
 
 class BaseOTPModel(models.Model):
@@ -20,44 +9,29 @@ class BaseOTPModel(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # Store hashed OTP
-    code = models.CharField(_("code"), max_length=256)
+    # Store hashed version of OTP
+    code = models.CharField(max_length=256)
+    # Whether the OTP has been used
+    is_used = models.BooleanField(default=False)
     # Number of verification attempts
-    attempts = models.PositiveIntegerField(_("attempts"), default=0)
+    attempts = models.PositiveIntegerField(default=0)
     # Max allowed attempts
-    max_attempts = models.PositiveIntegerField(_("max attempts"), default=3)
-
-    is_active = models.BooleanField(_("is active"), default=True, db_index=True)
-    is_verified = models.BooleanField(_("is verified"), default=False)
-
-    expires_at = models.DateTimeField(_("expires at"), default=get_default_expires_at)
-
-    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
-    last_attempted = models.DateTimeField(_("last attempted"), auto_now=True)
+    max_attempts = models.PositiveIntegerField(default=3)
+    # Timestamps for OTP creation and last update
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_attempted = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
-        ordering = ["-created_at"]
-        verbose_name = _("Base OTP code")
-        verbose_name_plural = _("Base OTP codes")
-
-    def is_expired(self) -> bool:
-        """Check if the OTP has expired."""
-        result: bool = timezone.now() > self.expires_at
-        return result
+        ordering = "-created_at"
+        verbose_name = "Base OTP code"
+        verbose_name_plural = "Base OTP codes"
 
     def has_attempts_left(self) -> bool:
         """Check if the OTP has attempts left."""
         result: bool = self.attempts < self.max_attempts
         return result
 
-    @staticmethod
-    def generate_otp_code(length=5) -> str:
-        """Generate a random 5-digit OTP code."""
-        code: str = "".join(choices("0123456789", k=length))
-        return code
-
-    @staticmethod
     def hash_otp(otp: str) -> str:
         """Hash the OTP code using SHA-256."""
         hashed_otp: str = hashlib.sha256(otp.encode()).hexdigest()
@@ -69,8 +43,15 @@ class BaseOTPModel(models.Model):
         return result
 
     def save(self, *args, **kwargs):
+        # Check if the OTP has attempts left
+        if not self.has_attempts_left():
+            raise ValueError("OTP has reached its maximum attempts")
+
         if not self.code:
-            raise ValueError(
-                "OTP code cannot be empty"
-            )  # If OTP code is not already hashed
+            raise ValueError("OTP code cannot be empty")
+
+        # Hash the OTP code
+        otp_code: str = self.code
+        self.code = self.hash_otp(otp_code)
+
         super().save(*args, **kwargs)
