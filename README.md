@@ -45,7 +45,7 @@ A robust and secure authentication service built with Django and Django REST Fra
 1. **Clone the repository**
 
     ```bash
-    git clone [repository-url]
+    git clone https://github.com/pouria-drd/achare_auth.git
     cd achare_auth
     ```
 
@@ -65,15 +65,80 @@ A robust and secure authentication service built with Django and Django REST Fra
     pip install -r requirements.txt
     ```
 
-4. **Environment Setup**
+4. **Set Up Environment Variables:**
 
-    - Copy `.env.example` to `.env`
-    - Configure your environment variables:
-        - `SECRET_KEY`
-        - `DEBUG`
-        - `ALLOWED_HOSTS`
-        - `CORS_ALLOWED_ORIGINS`
-        - Other optional settings
+    Create a `.env` file in the project root and add the following:
+
+    ```ini
+    # ---------------------------------------------------------------
+    # Base URL and Admin URL Configuration
+    # ---------------------------------------------------------------
+
+    # Base URL for the API
+    BASE_URL="achare-api/"
+
+    # Admin URL for the API (Typically used to access Django's admin panel)
+    ADMIN_URL="admin/"
+
+    # ---------------------------------------------------------------
+    # Debugging and Secret Key Configuration
+    # ---------------------------------------------------------------
+
+    # Debug mode (True for development, False for production)
+    # Set to "True" during development for detailed error messages, and "False" in production for security and performance
+    DEBUG="True"
+
+    # Secret key for Django (keep this secure!)
+    # This is a critical setting, keep it secret and never expose it publicly
+    SECRET_KEY="your_secret_key"
+
+    # Enable Django's debug toolbar (optional)
+    # Set to "True" to enable the Django Debug Toolbar for easier debugging during development
+    ENABLE_DEBUG_TOOLBAR="True"
+
+    # ---------------------------------------------------------------
+    # Static and Media File Configuration
+    # ---------------------------------------------------------------
+
+    # Static files URL and root directory
+    # URL where static files will be served from, relative to the site root
+    STATIC_URL=static/
+    # Path where static files will be stored after collection (useful when deploying)
+    STATIC_ROOT=static
+
+    # Media files URL and root directory
+    # URL where media files (uploads) will be served from
+    MEDIA_URL=/media/
+    # Path where media files (uploads) will be stored on the server
+    MEDIA_ROOT=media
+
+    # ---------------------------------------------------------------
+    # Host and Debugging IPs Configuration
+    # ---------------------------------------------------------------
+
+    # Allowed hosts for development (keep it simple)
+    # These are the domains or IP addresses that Django will allow requests from
+    ALLOWED_HOSTS=localhost,127.0.0.1
+
+    # Internal IPs for Django Debug Toolbar and debugging
+    # Defines which IPs can access the debug toolbar
+    INTERNAL_IPS=127.0.0.1
+
+    # ---------------------------------------------------------------
+    # CORS (Cross-Origin Resource Sharing) Configuration
+    # ---------------------------------------------------------------
+
+    # Allow credentials (cookies, HTTP authentication, etc.) in CORS requests
+    # Set to "True" if you want to allow credentials (e.g., cookies, HTTP headers) in CORS requests
+    CORS_ALLOW_CREDENTIALS=True
+
+    # List of allowed origins (comma-separated) that can make CORS requests to your API
+    # CORS_ALLOWED_ORIGINS=https://example.com,https://another-example.com
+
+    # List of allowed origins (comma-separated) that can make CORS requests to your API
+    # Set this to the URLs of your frontend application(s)
+    CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+    ```
 
 5. **Database Setup**
 
